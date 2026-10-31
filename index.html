@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#07111c">
+<title>CHAT X APK Download</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;min-height:100vh;display:grid;place-items:center;
+ padding:20px;background:#07111c;color:#fff;
+ font-family:Arial,sans-serif
+}
+.card{
+ width:100%;max-width:420px;padding:25px;
+ text-align:center;background:#101e2d;
+ border:1px solid #263d52;border-radius:22px
+}
+.logo{
+ width:75px;height:75px;margin:auto;
+ display:grid;place-items:center;border:2px solid #27dff5;
+ border-radius:22px;color:#27dff5;font-size:28px;font-weight:bold
+}
+h1{font-size:32px;margin-bottom:8px}
+p{color:#a5b8ca;line-height:1.6}
+.stats{display:flex;gap:12px;margin:25px 0}
+.stat{
+ flex:1;padding:17px 8px;background:#07111c;
+ border-radius:13px;border:1px solid #263d52
+}
+.number{font-size:25px;font-weight:bold;color:#27dff5}
+.label{font-size:12px;color:#a5b8ca;margin-top:7px}
+.btn{
+ display:block;padding:16px;background:#27dff5;
+ color:#06121a;text-decoration:none;font-weight:bold;
+ border-radius:12px
+}
+.small{font-size:12px;margin-top:20px}
+</style>
+</head>
+
+<body>
+<div class="card">
+ <div class="logo">CX</div>
+
+ <h1>CHAT X</h1>
+ <p>Official APK Download<br>
+ NIKHIL 009 MOD HUB</p>
+
+ <div class="stats">
+  <div class="stat">
+   <div class="number" id="downloads">—</div>
+   <div class="label">APK DOWNLOADS</div>
+  </div>
+
+  <div class="stat">
+   <div class="number" id="version">—</div>
+   <div class="label">LATEST VERSION</div>
+  </div>
+ </div>
+
+ <a class="btn" id="download"
+ href="https://github.com/Nikhil-009-modeller/CHATX-UPDATE-SYSTEM/releases">
+ DOWNLOAD APK
+ </a>
+
+ <p id="status">Checking latest release...</p>
+
+ <p class="small">
+ Download count shows GitHub's recorded APK downloads,
+ not unique users or successful installations.
+ </p>
+</div>
+
+<script>
+const owner = "Nikhil-009-modeller";
+const repo = "CHATX-UPDATE-SYSTEM";
+
+fetch(`https://api.github.com/repos/${owner}/${repo}/releases/latest`)
+.then(response => {
+ if (!response.ok) {
+  throw new Error("No published APK release found.");
+ }
+ return response.json();
+})
+.then(release => {
+ const assets = release.assets || [];
+
+ const apks = assets.filter(file =>
+  file.name.toLowerCase().endsWith(".apk")
+ );
+
+ const total = apks.reduce((sum, file) =>
+  sum + file.download_count, 0
+ );
+
+ document.getElementById("downloads").textContent =
+  total.toLocaleString();
+
+ document.getElementById("version").textContent =
+  release.tag_name || "Latest";
+
+ const button = document.getElementById("download");
+ const status = document.getElementById("status");
+
+ if (apks.length > 0) {
+  button.href = apks[0].browser_download_url;
+  status.textContent = apks[0].name;
+ } else {
+  button.href = release.html_url;
+  status.textContent = "APK asset not found. Open release.";
+ }
+})
+.catch(error => {
+ document.getElementById("downloads").textContent = "—";
+ document.getElementById("status").textContent =
+  error.message + " Upload APK in GitHub Releases.";
+});
+</script>
+</body>
+</html>
